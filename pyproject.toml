@@ -1,0 +1,32 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry]
+name = "auth"
+version = "0.1.0"
+description = "auth service"
+authors = ["libkluid <kluid.me@yahoo.com>"]
+readme = "README.md"
+packages = [ { include = "auth" } ]
+
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.99.1"
+pydantic = "^1.10.11"
+uvicorn = {extras = ["standard"], version = "^0.22.0"}
+prisma = "^0.9.1"
+shortuuid = "^1.0.11"
+ruff = "^0.0.277"
+black = "^23.3.0"
+
+
+[tool.black]
+target-version = ['py311']
+
+
+[tool.ruff]
+select = ["E", "F", "I", "RUF", "NPY", "C90", "N"]
+target-version = "py311"

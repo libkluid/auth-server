@@ -1,0 +1,12 @@
+version: '2'
+services:
+  db:
+    container_name: auth
+    platform: linux/amd64
+    image: postgres:15.3-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=auth
+      - POSTGRES_PASSWORD=auth
+      - POSTGRES_DB=auth
