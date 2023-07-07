@@ -4,8 +4,8 @@ from os import environ
 
 from .policy import AuthPolicy
 
-AUTH_PRIVATE_KEY = environ.get("RSA_PRIVATE_KEY", None)
-assert AUTH_PRIVATE_KEY is not None, "RSA_PRIVATE_KEY is not set"
+AUTH_PRIVATE_KEY = environ.get("AUTH_PRIVATE_KEY", None)
+assert AUTH_PRIVATE_KEY is not None, "AUTH_PRIVATE_KEY is not set"
 
 auth_policy = AuthPolicy(
     access_token_duration=int(timedelta(hours=2).total_seconds()),
