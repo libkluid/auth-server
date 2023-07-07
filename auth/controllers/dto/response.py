@@ -3,7 +3,7 @@ from typing import Any, ClassVar, Generic, TypeVar
 
 from pydantic import BaseModel
 
-from auth.domain.entities import Token
+from auth.domain.entities import Token, TokenType
 
 DataT = TypeVar("DataT")
 
@@ -27,6 +27,13 @@ class User(BaseModel):
     uid: str
     created_at: datetime
     last_access: datetime
+
+class Verify(BaseModel):
+    sub: str
+    ssn: str
+    iat: int
+    exp: int
+    tty: TokenType
 
 
 __all__ = [

@@ -22,3 +22,13 @@ model User {
     updated_at  DateTime    @updatedAt
     deleted_at  DateTime?
 }
+
+model Session {
+    @@map("sessions")
+
+    id          Int         @id @default(autoincrement())
+    uid         String
+    session     String      @unique
+    created_at  DateTime    @default(now())
+    expires_at  DateTime
+}

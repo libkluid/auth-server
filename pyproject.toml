@@ -21,6 +21,7 @@ prisma = "^0.9.1"
 shortuuid = "^1.0.11"
 ruff = "^0.0.277"
 black = "^23.3.0"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 
 
 [tool.black]
