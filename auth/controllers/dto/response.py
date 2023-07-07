@@ -28,6 +28,7 @@ class User(BaseModel):
     created_at: datetime
     last_access: datetime
 
+
 class Verify(BaseModel):
     sub: str
     ssn: str

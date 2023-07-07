@@ -1,3 +1,4 @@
+from .refresh import Refresh
 from .signin import SignIn
 from .signout import SignOut
 from .signup import SignUp
@@ -8,6 +9,7 @@ __all__ = [
     "SignIn",
     "SignOut",
     "SignUp",
+    "Refresh",
     "VerifySession",
     "VerifyToken",
 ]

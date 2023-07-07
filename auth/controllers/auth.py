@@ -2,7 +2,14 @@ from fastapi import APIRouter
 
 from auth.controllers import dto
 from auth.domain import entities
-from auth.usecase.auth import SignIn, SignOut, SignUp, VerifySession, VerifyToken
+from auth.usecase.auth import (
+    Refresh,
+    SignIn,
+    SignOut,
+    SignUp,
+    VerifySession,
+    VerifyToken,
+)
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -32,6 +39,7 @@ async def sign_in(data: dto.request.EmailPw) -> dto.Response[dto.response.Token]
 
     return dto.Response[dto.response.Token](ok=True, error=None, data=token)
 
+
 @router.post(
     path="/signout",
     status_code=200,
@@ -42,7 +50,7 @@ async def sign_out(data: dto.request.Token) -> dto.Response[None]:
     token_payload = await verify_token.execute(data.token)
 
     signout = SignOut()
-    token = await signout.execute(token_payload)
+    await signout.execute(token_payload)
 
     return dto.Response[dto.response.Token](ok=True, error=None)
 
@@ -71,5 +79,27 @@ async def verify(data: dto.request.Token) -> dto.Response[dto.response.Verify]:
             iat=token_payload.iat,
             exp=token_payload.exp,
             tty=token_payload.tty,
-        )
+        ),
+    )
+
+
+@router.post(
+    path="/refresh",
+    status_code=200,
+    response_model=dto.Response[dto.response.Token],
+)
+async def refresh(data: dto.request.Token) -> dto.Response[dto.response.Token]:
+    verify_token = VerifyToken()
+    token_payload = await verify_token.execute(data.token)
+
+    refresh = Refresh()
+    access_token = await refresh.execute(token_payload)
+
+    return dto.Response[dto.response.Token](
+        ok=True,
+        error=None,
+        data=dto.response.Token(
+            access_token=access_token,
+            refresh_token=data.token,
+        ),
     )

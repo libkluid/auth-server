@@ -22,14 +22,22 @@ class PasswordNotMatchError(AuthDomainError):
     def __init__(self, email: str):
         self.email = email
 
+
 class InvalidTokenSignatureError(AuthDomainError):
     ...
+
 
 class InvalidTokenPayloadError(AuthDomainError):
     ...
 
+
+class InvalidTokenTypeError(AuthDomainError):
+    ...
+
+
 class TokenExpiredError(AuthDomainError):
     ...
+
 
 class SessionExpiredError(AuthDomainError):
     session: str

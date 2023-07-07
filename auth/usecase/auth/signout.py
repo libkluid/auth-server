@@ -1,14 +1,12 @@
-from auth.config import auth_policy
 from auth.domain import entities, errors
-from auth.repository import AuthRepository, SessionRepository, TokenRepository, orm
-from auth.utils.crypto import generate_hash
+from auth.repository import SessionRepository, orm
 
 
 class SignOut:
     async def execute(
-            self,
-            token_payload: entities.AccessTokenPayload | entities.RefreshTokenPayload,
-        ) -> entities.AccessTokenPayload | entities.RefreshTokenPayload:
+        self,
+        token_payload: entities.AccessTokenPayload | entities.RefreshTokenPayload,
+    ) -> entities.AccessTokenPayload | entities.RefreshTokenPayload:
         async with orm.transaction() as tx:
             session_repository = SessionRepository(tx)
 

@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Any
 
-from jose import jwt, JWTError
+from jose import JWTError, jwt
 from pydantic import ValidationError
 
 from auth.config import auth_policy
@@ -22,8 +22,8 @@ class TokenRepository:
         return payload
 
     def verify(
-            self, token: str
-        ) -> entities.AccessTokenPayload | entities.RefreshTokenPayload:
+        self, token: str
+    ) -> entities.AccessTokenPayload | entities.RefreshTokenPayload:
         payload = self.verify_signature(token)
 
         tty = payload.get("tty")
@@ -47,6 +47,16 @@ class TokenRepository:
 
         return token_payload
 
+    def encode_token(
+        self,
+        payload: entities.AccessTokenPayload | entities.RefreshTokenPayload,
+    ) -> str:
+        return jwt.encode(
+            claims=payload.dict(),
+            algorithm="HS256",
+            key=auth_policy.private_key,
+        )
+
     def generate_tokens(self, session: models.Session) -> entities.Token:
         access_token_expires_at = session.created_at + timedelta(
             seconds=auth_policy.access_token_duration
@@ -61,22 +71,21 @@ class TokenRepository:
             "iat": int(1000 * session.created_at.timestamp()),
         }
 
-        access_token = jwt.encode(
-            claims=entities.AccessTokenPayload(
-                **payload,
-                exp=int(1000 * access_token_expires_at.timestamp()),
-            ).dict(),
-            algorithm="HS256",
-            key=auth_policy.private_key,
+        access_token_payload = entities.AccessTokenPayload(
+            **payload,
+            exp=int(1000 * access_token_expires_at.timestamp()),
         )
 
-        refresh_token = jwt.encode(
-            claims=entities.RefreshTokenPayload(
-                **payload,
-                exp=int(1000 * refresh_token_expires_at.timestamp()),
-            ).dict(),
-            algorithm="HS256",
-            key=auth_policy.private_key,
+        access_token = self.encode_token(access_token_payload)
+
+        refresh_token_payload = entities.RefreshTokenPayload(
+            **payload,
+            exp=int(1000 * refresh_token_expires_at.timestamp()),
         )
 
-        return entities.Token(access_token=access_token, refresh_token=refresh_token)
+        refresh_token = self.encode_token(refresh_token_payload)
+
+        return entities.Token(
+            access_token=access_token,
+            refresh_token=refresh_token,
+        )

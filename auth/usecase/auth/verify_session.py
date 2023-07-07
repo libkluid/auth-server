@@ -1,13 +1,14 @@
 from datetime import datetime
-from auth.domain import errors, entities
-from auth.repository import TokenRepository, SessionRepository
+
+from auth.domain import entities, errors
+from auth.repository import SessionRepository
 from auth.repository.orm import transaction
+
 
 class VerifySession:
     async def execute(
-            self,
-            access_token_payload: entities.AccessTokenPayload
-        ) -> entities.AccessTokenPayload:
+        self, access_token_payload: entities.AccessTokenPayload
+    ) -> entities.AccessTokenPayload:
         async with transaction() as tx:
             session_repository = SessionRepository(tx)
 

@@ -27,6 +27,7 @@ class AccessTokenPayload(BaseModel):
     exp: int
     tty: TokenType = TokenType.ACCESS
 
+
 class RefreshTokenPayload(BaseModel):
     sub: str
     ssn: str
