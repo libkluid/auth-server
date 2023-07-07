@@ -1,6 +1,9 @@
 dev:
     poetry run uvicorn auth.main:app --reload --host "0.0.0.0" --port 3000
 
+serve:
+    poetry run uvicorn auth.main:app --host "0.0.0.0" --port 3000
+
 lint:
     poetry run ruff check .
 
