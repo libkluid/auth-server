@@ -39,3 +39,8 @@ class RefreshTokenPayload(BaseModel):
 class Token(BaseModel):
     access_token: str
     refresh_token: str
+
+
+class AccessType(str, Enum):
+    SIGNUP = "signup"
+    SIGNIN = "signin"

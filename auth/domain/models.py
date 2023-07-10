@@ -1,6 +1,7 @@
-from prisma.models import Session, User
+from prisma.models import AccessLog, Session, User
 
 __all__ = [
     "User",
     "Session",
+    "AccessLog",
 ]

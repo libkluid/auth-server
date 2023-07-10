@@ -32,3 +32,13 @@ model Session {
     created_at  DateTime    @default(now())
     expires_at  DateTime
 }
+
+model AccessLog {
+    @@map("access_logs")
+
+    id          Int         @id @default(autoincrement())
+    action      String
+    uid         String
+    success     Boolean
+    created_at  DateTime    @default(now())
+}
