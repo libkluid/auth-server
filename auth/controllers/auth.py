@@ -7,6 +7,7 @@ from auth.usecase.auth import (
     SignIn,
     SignOut,
     SignUp,
+    ChangePassword,
     VerifySession,
     VerifyToken,
 )
@@ -52,7 +53,24 @@ async def sign_out(data: dto.request.Token) -> dto.Response[None]:
     signout = SignOut()
     await signout.execute(token_payload)
 
-    return dto.Response[dto.response.Token](ok=True, error=None)
+    return dto.Response[None](ok=True, error=None)
+
+@router.post(
+    path="/change_password",
+    status_code=200,
+    response_model=dto.Response[None],
+)
+async def change_password(data: dto.request.ChangePassword) -> dto.Response[None]:
+    verify_token = VerifyToken()
+    token_payload = await verify_token.execute(data.token)
+
+    if token_payload.tty == entities.TokenType.ACCESS:
+        assert isinstance(token_payload, entities.AccessTokenPayload)
+
+    change_password = ChangePassword()
+    await change_password.execute(token_payload, data.password)
+
+    return dto.Response[None](ok=True, error=None)
 
 
 @router.post(

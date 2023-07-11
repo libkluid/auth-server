@@ -43,3 +43,15 @@ class AuthRepository(TxRepo):
         )
 
         return user
+
+    async def update_password(
+            self,
+            user: models.User,
+            hash: str,
+            salt: str
+        ) -> models.User:
+        user = await self.prisma.user.update(
+            where={"uid": user.uid}, data={"hash": hash, "salt": salt}
+        )
+
+        return user

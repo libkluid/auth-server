@@ -44,3 +44,4 @@ class Token(BaseModel):
 class AccessType(str, Enum):
     SIGNUP = "signup"
     SIGNIN = "signin"
+    CHANGE_PASSWORD = "change_password"

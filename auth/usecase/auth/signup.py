@@ -1,10 +1,10 @@
-from auth.domain import entities, errors
+from auth.domain import entities, errors, models
 from auth.repository import AccessRepository, AuthRepository, orm
 from auth.utils.crypto import generate_hash, generate_salt
 
 
 class SignUp:
-    async def execute(self, email: str, password: str) -> entities.Token:
+    async def execute(self, email: str, password: str) -> models.User:
         salt = generate_salt()
         hash = generate_hash(password, salt)
 
